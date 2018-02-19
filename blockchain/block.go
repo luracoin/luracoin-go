@@ -29,12 +29,12 @@ func (b *Block) PrintBlock() {
 // NewBlock creates and returns Block
 func NewBlock(data string, prevBlockHash string, height int) *Block {
 
-	// Initialize the block with default configuration. Later we will override
-	// some fields like nonce or hash.
+	// Initialize the block with default configuration. Later we will override some
+	// fields like nonce or hash.
 	block := &Block{time.Now().Unix(), data, prevBlockHash, "", 0, height}
 
-	// Start working on the Proof of work, this function will return two values
-	// a nonce and a hash.
+	// Start working on the Proof of work, this function will return two values a
+	// nonce and a hash.
 	//pow := NewProofOfWork(block)
 	pow := NewProofOfWork(block)
 	nonce, hash := pow.Run()

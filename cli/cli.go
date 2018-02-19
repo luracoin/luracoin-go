@@ -40,13 +40,6 @@ func (cli *CLI) validateArgs() {
 func (cli *CLI) Run() {
 	cli.validateArgs()
 
-	// Check if we registered a NODE_ID
-	/*nodeID := os.Getenv("NODE_ID")
-	if nodeID == "" {
-		fmt.Printf("NODE_ID env. var is not set!")
-		os.Exit(1)
-	}*/
-
 	switch os.Args[1] {
 	case "createwallet":
 		createwallet()
@@ -56,13 +49,21 @@ func (cli *CLI) Run() {
 		createblockchain(os.Args[2])
 	case "addBlock":
 		addblock(os.Args[2])
+	case "tx":
+		transcation(os.Args[2])
 	case "test":
 		test(os.Args[2])
 	default:
 		cli.printUsage()
 		os.Exit(1)
 	}
+}
 
+func transcation(data string) {
+	tx := blockchain.NewCoinbaseTX("abc", data)
+	tx.PrintTransaction()
+
+	blockchain.NewUTXOTransaction()
 }
 
 func test(data string) {

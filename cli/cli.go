@@ -6,6 +6,7 @@ import (
 	"github.com/maguayo/luracoin/wallet"
 	"log"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -53,6 +54,10 @@ func (cli *CLI) Run() {
 		transcation(os.Args[2])
 	case "test":
 		test(os.Args[2])
+	case "getBlock":
+		getBlock(os.Args[2])
+	case "searchBlock":
+		searchBlock(os.Args[2])
 	default:
 		cli.printUsage()
 		os.Exit(1)
@@ -63,7 +68,7 @@ func transcation(data string) {
 	tx := blockchain.NewCoinbaseTX("abc", data)
 	tx.PrintTransaction()
 
-	blockchain.NewUTXOTransaction()
+	//blockchain.NewUTXOTransaction()
 }
 
 func test(data string) {
@@ -93,6 +98,19 @@ func test(data string) {
 func createblockchain(data string) {
 	blockchain.CreateGenesisBlock(data)
 	fmt.Println("Done!")
+}
+
+func getBlock(hash string) {
+	hash = "0000dbfe79456778b76494cbefa49534bd114c22c5fa508e31229b240182c200"
+	//blockchain.SavedBlocks()
+	fmt.Println("END DATABASE")
+	blockchain.SearchBlookByHash(hash)
+}
+
+func searchBlock(term string) {
+	a, _ := strconv.Atoi(term)
+	fmt.Println(a)
+	//blockchain.SearchBlook(a)
 }
 
 func addblock(data string) {

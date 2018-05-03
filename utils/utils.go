@@ -23,3 +23,15 @@ func ReverseBytes(data []byte) {
 		data[i], data[j] = data[j], data[i]
 	}
 }
+
+func HeigthToString(heigth uint32) []byte {
+	// 00000000
+	bs := make([]byte, 4)
+	binary.LittleEndian.PutUint32(bs, heigth)
+	return bs
+}
+
+func BytesToInt(b []byte) uint32 {
+	data := binary.LittleEndian.Uint32(b)
+	return data
+}

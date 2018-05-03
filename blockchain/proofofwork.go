@@ -1,13 +1,12 @@
 package blockchain
 
 import (
+	"bytes"
 	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 	"github.com/maguayo/luracoin/utils"
 	"math"
 	"math/big"
-	"strings"
 )
 
 // 24 is an arbitrary number, our goal is to have a target that takes less than 256 bits
@@ -15,7 +14,7 @@ import (
 // the bigger the difference the more difficult it's to find a proper hash.
 // Example: 6 (zeroes) * 4(bits) = target 24
 //const targetBits = 24
-const targetBits = 24
+const targetBits = 16
 
 var (
 	maxNonce = math.MaxInt64
@@ -41,19 +40,22 @@ func NewProofOfWork(b *Block) *ProofOfWork {
 
 // prepareData in this function we just merge block fields with the target and nonce
 func (pow *ProofOfWork) prepareData(nonce int) []byte {
-	data := strings.Join(
-		[]string{
+	data := bytes.Join(
+		[][]byte{
 			pow.block.PrevBlockHash,
 			pow.block.Data,
-			string(utils.IntToHex(pow.block.Timestamp)),
-			string(utils.IntToHex(int64(targetBits))),
-			string(utils.IntToHex(int64(nonce))),
-		}, "")
-	return []byte(data)
+			utils.IntToHex(pow.block.Timestamp),
+			utils.IntToHex(int64(targetBits)),
+			utils.IntToHex(int64(nonce)),
+		},
+		[]byte{},
+	)
+
+	return data
 }
 
 // Run method starts looking for the proof of work
-func (pow *ProofOfWork) Run() (int, string) {
+func (pow *ProofOfWork) Run() (int, []byte) {
 	var hashInt big.Int
 	var hash [32]byte
 	nonce := 0
@@ -73,5 +75,6 @@ func (pow *ProofOfWork) Run() (int, string) {
 	}
 	fmt.Print("\n\n")
 
-	return nonce, hex.EncodeToString(hash[:])
+	//hex.EncodeToString(hash[:])
+	return nonce, hash[:]
 }
